@@ -17,7 +17,7 @@ Future<List<int>> _icon(int px, {double mark = .62, bool rounded = false, bool t
     ..shader = const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [Palette.fieldHi, Palette.field],
+      colors: [Palette.rakeHi, Palette.rakeDeep],
     ).createShader(rect);
   if (transparent) {
     // Adaptive-icon foreground: the launcher supplies the background.
@@ -42,7 +42,13 @@ void main() {
   testWidgets('write icons', (tester) async {
     Txt.useGoogleFonts = false;
     await tester.runAsync(() async {
-      Future<void> write(String path, int px, {double mark = .62, bool rounded = false, bool transparent = false}) async {
+      Future<void> write(
+        String path,
+        int px, {
+        double mark = .62,
+        bool rounded = false,
+        bool transparent = false,
+      }) async {
         File(path).writeAsBytesSync(await _icon(px, mark: mark, rounded: rounded, transparent: transparent));
       }
 
