@@ -413,16 +413,16 @@ class _DiagramPainter extends CustomPainter {
         Offset(x, top),
         Offset(x, reach),
         Paint()
-          ..color = color.withValues(alpha: .16)
-          ..strokeWidth = 14
+          ..color = color.withValues(alpha: .10)
+          ..strokeWidth = 10
           ..strokeCap = StrokeCap.round,
       );
       canvas.drawLine(
         Offset(x, top),
         Offset(x, reach),
         Paint()
-          ..color = color
-          ..strokeWidth = 4
+          ..color = color.withValues(alpha: .85)
+          ..strokeWidth = 3
           ..strokeCap = StrokeCap.round,
       );
     }
@@ -431,19 +431,34 @@ class _DiagramPainter extends CustomPainter {
       if (y > reach + 1) break;
       final s = tt.stations[branch.stations[i]];
       final interchange = s.lines.length > 1 || s.links.isNotEmpty;
-      // A platform bar joining both tracks, like a station on a diagram.
-      final bar = RRect.fromRectAndRadius(
-        Rect.fromLTRB(_trackA - 9, y - (interchange ? 7 : 5), _trackB + 9, y + (interchange ? 7 : 5)),
-        const Radius.circular(9),
-      );
-      canvas.drawRRect(bar, Paint()..color = interchange ? Palette.ink : Palette.field);
-      canvas.drawRRect(
-        bar,
-        Paint()
-          ..color = interchange ? Palette.ink : color
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.2,
-      );
+      if (interchange) {
+        // An interchange: a white bar across both tracks, like a printed diagram.
+        final bar = RRect.fromRectAndRadius(
+          Rect.fromLTRB(_trackA - 8, y - 6, _trackB + 8, y + 6),
+          const Radius.circular(6),
+        );
+        canvas.drawRRect(bar, Paint()..color = Palette.ink);
+        canvas.drawRRect(
+          bar,
+          Paint()
+            ..color = Palette.field
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.6,
+        );
+      } else {
+        // An ordinary stop: a small tick on each track.
+        for (final x in const [_trackA, _trackB]) {
+          canvas.drawCircle(Offset(x, y), 4.2, Paint()..color = Palette.field);
+          canvas.drawCircle(
+            Offset(x, y),
+            4.2,
+            Paint()
+              ..color = color
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2,
+          );
+        }
+      }
       canvas.drawLine(
         Offset(_trackB + 12, y),
         Offset(_labelX - 8, y),

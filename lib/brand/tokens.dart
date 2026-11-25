@@ -52,6 +52,7 @@ abstract final class Txt {
     Color color = Palette.ink,
     double height = 1.3,
     double spacing = 0,
+    bool tabular = false,
   }) {
     final base = TextStyle(
       fontSize: size,
@@ -59,7 +60,9 @@ abstract final class Txt {
       height: height,
       letterSpacing: spacing,
       color: color,
-      fontFeatures: const [FontFeature.tabularFigures()],
+      // Tabular figures only where numbers line up in columns: in running text
+      // they widen full stops and commas too.
+      fontFeatures: tabular ? const [FontFeature.tabularFigures()] : null,
     );
     return useGoogleFonts ? GoogleFonts.schibstedGrotesk(textStyle: base) : base;
   }

@@ -323,7 +323,7 @@ class _DepartureRow extends StatelessWidget {
           children: [
             SizedBox(
               width: 56,
-              child: Text(clock(d.at), style: Txt.text(15.5, weight: FontWeight.w800)),
+              child: Text(clock(d.at), style: Txt.display(17, weight: FontWeight.w600)),
             ),
             Container(
               width: 4,

@@ -181,9 +181,14 @@ class _TransitMapState extends State<TransitMap> {
         CircleMarker(
           point: LatLng(s.lat, s.lng),
           radius: r,
-          color: dim ? Palette.field : (fav ? Palette.signal : (small ? Color(line.color) : Palette.field)),
-          borderColor: dim ? Color(line.color).withValues(alpha: .3) : (interchange ? Palette.ink : Color(line.color)),
-          borderStrokeWidth: small ? 0 : (interchange ? 2.2 : 1.8),
+          // Interchanges are white dots ringed in black, as on a printed line map.
+          color: dim
+              ? Palette.field
+              : (fav ? Palette.signal : (interchange ? Palette.ink : (small ? Color(line.color) : Palette.field))),
+          borderColor: dim
+              ? Color(line.color).withValues(alpha: .3)
+              : (interchange ? Palette.field : Color(line.color)),
+          borderStrokeWidth: small ? 0 : (interchange ? 1.6 : 1.8),
         ),
       );
     }
@@ -248,10 +253,11 @@ class _TrainsLayerState extends State<_TrainsLayer> {
       core.add(
         CircleMarker(
           point: pt,
-          radius: (p.train.fast ? 4.4 : 3.6) * s,
-          color: Palette.ink,
-          borderColor: c,
-          borderStrokeWidth: 2.4 * s,
+          // A solid dot in the line's colour with a dark edge, so a train never reads as a station.
+          radius: (p.train.fast ? 4.6 : 3.8) * s,
+          color: p.train.fast ? Palette.signal : c,
+          borderColor: Palette.field,
+          borderStrokeWidth: 1.4 * s,
         ),
       );
     }

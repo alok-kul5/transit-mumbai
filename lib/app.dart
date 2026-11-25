@@ -64,7 +64,11 @@ class _TransitAppState extends State<TransitApp> with SingleTickerProviderStateM
         home: Stack(
           children: [
             HomeScreen(introDone: _introDone),
-            if (_splash) Splash(onReveal: () => _introDone.value = true, onDone: () => setState(() => _splash = false)),
+            if (_splash)
+              Material(
+                type: MaterialType.transparency,
+                child: Splash(onReveal: () => _introDone.value = true, onDone: () => setState(() => _splash = false)),
+              ),
           ],
         ),
       ),
