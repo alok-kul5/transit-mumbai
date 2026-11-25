@@ -13,15 +13,15 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 <p align="center">
-  <img src="docs/screenshots/splash.jpg" width="200" alt="Splash: a yellow line draws itself, a signal runs down it and the wordmark rises">
+  <img src="docs/screenshots/splash.jpg" width="200" alt="Splash: on local-train maroon the network draws itself as a line diagram, trains run down each line, and the wordmark rises">
+  <img src="docs/screenshots/doors.jpg" width="200" alt="The splash slides open from the centre like a local's doors, onto the map">
   <img src="docs/screenshots/home.jpg" width="200" alt="Home: the night map of Mumbai with every line glowing and trains moving, and a sheet with next trains">
-  <img src="docs/screenshots/station.jpg" width="200" alt="Station: Dadar's board with a big countdown, an approach ring, platforms and fast and AC tags">
-  <img src="docs/screenshots/line.jpg" width="200" alt="Where's my train: the Western line as a diagram, with trains running both ways between stations">
+  <img src="docs/screenshots/station.jpg" width="200" alt="Station: Andheri's board with a big countdown, an approach ring, platforms and fast and slow tags">
 </p>
 <p align="center">
-  <img src="docs/screenshots/search.jpg" width="200" alt="Search: station names, codes and aliases like VT">
+  <img src="docs/screenshots/line.jpg" width="200" alt="Where's my train: the Western line as a diagram, with trains running both ways between stations">
   <img src="docs/screenshots/train.jpg" width="200" alt="Train: every stop and time on the run, with the train's place on it now">
-  <img src="docs/screenshots/nearest.jpg" width="200" alt="Nearest station from your location, with a walking time and its next train">
+  <img src="docs/screenshots/nearest.jpg" width="200" alt="Nearest station from your location: the map flies to Andheri and opens its board">
   <img src="docs/screenshots/time.jpg" width="200" alt="Time controls: jump to the morning rush or run the schedule at 60 times speed">
 </p>
 
@@ -33,13 +33,13 @@ Motion was designed before the screens, with one set of tokens (`lib/brand/token
 
 | Moment | What happens |
 |---|---|
-| **Load** | On a faint grid of diagonal tracks, the yellow line of the mark draws itself and bends at 45°, the end station pops in, and a white signal runs down the line like a train on a diagram. The wordmark rises letter by letter. Then the end station opens into a circle that reveals the map. The web loading screen and the Android launch screen use the same ink colour, so nothing flashes. Tap to skip. |
+| **Load** | On local-train maroon, the network draws itself as a line diagram, each line in its own colour with a stagger, and a cream train runs down every line. The mark draws in the middle, the wordmark rises letter by letter, and the lines step back so it reads. Then the screen slides open from the centre like a local's doors, a cream edge on each, onto the map. The web loading screen, the Android launch screen and the app icon share the maroon, so nothing flashes. Tap to skip to the doors. |
 | **The map wakes up** | As the splash opens, the camera flies in from the whole region to the city, every line draws itself out from its terminus, the stations appear and the trains start to move. The sheet and top bar rise into place. |
-| **Fly to a station** | Pick a station on the map or in search and the camera flies like a plane, rising for long hops and settling just above the sheet, where a yellow pulse marks it. The sheet cross-fades from the overview to the station's board. |
-| **Countdown** | The next train's minutes and seconds roll like a platform indicator, an approach ring closes as it gets nearer, and the card turns yellow inside two minutes. "Now" pulses when the train is due. |
-| **Trains on the map** | Every running train is a solid dot in its line's colour (fast trains in yellow), redrawn about 15 times a second, easing out of a station, cruising, and braking into the next. |
-| **Where's my train** | The line tile grows into a full-bleed header in the line's colour. Both tracks draw down the screen, station names stagger in (interchanges as white bars across both tracks), and the trains glide along: down trains on one track, up trains on the other, fast trains in yellow, AC rakes with a blue outline, ladies specials with a pink light. Tap one to open its run. "Watch it on the line" from a train scrolls to it and rings it. |
-| **Time travel** | Tap the clock in the corner to jump to the morning or evening rush, or run the schedule at 10× or 60×, so you can watch the 9 am crush on the Western line at any hour. The italic line under the clock turns yellow and says what you are looking at. |
+| **Fly to a station** | Pick a station on the map or in search and the camera flies like a plane, rising for long hops and settling just above the sheet, where a cream pulse marks it. The sheet cross-fades from the overview to the station's board. |
+| **Countdown** | The next train's minutes and seconds roll like a platform indicator, an approach ring closes as it gets nearer, and the card's edge lights up in cream inside two minutes. "Now" pulses when the train is due. |
+| **Trains on the map** | Every running train is a solid dot in its line's colour (fast trains in cream), redrawn about 15 times a second, easing out of a station, cruising, and braking into the next. |
+| **Where's my train** | The line tile grows into a full-bleed header in the line's colour. Both tracks draw down the screen, station names stagger in (interchanges as white bars across both tracks), and the trains glide along: down trains on one track, up trains on the other, fast trains in cream, AC rakes with a blue outline, ladies specials with a pink light. Tap one to open its run. "Watch it on the line" from a train scrolls to it and rings it. |
+| **Time travel** | Tap the clock in the corner to jump to the morning or evening rush, or run the schedule at 10× or 60×, so you can watch the 9 am crush on the Western line at any hour. The italic line under the clock turns cream and says what you are looking at. |
 
 ## Features
 
@@ -47,7 +47,7 @@ Motion was designed before the screens, with one set of tokens (`lib/brand/token
 - **Timetables bundled**: 3,312 suburban trains with every stop, time and most platforms, about 580 KB of JSON. Nothing is fetched except map tiles, so the boards work in a tunnel.
 - **Next trains**: a departure board for any station with live countdowns, filters by line and fast only, platform numbers, and trains that end at the station left out (you cannot board them). Late at night it looks across midnight, both ways.
 - **Fast, slow, AC, ladies**: from the timetable. AC and ladies rakes that run as ordinary trains at the weekend are shown as ordinary on those days.
-- **Station search**: by name, by part of a word, by code (`ADH`) or by alias (`VT`, `Bombay Central`). Every word must match, and the matching part lights up.
+- **Station search**: by name, by part of a word, by code (`ADH`) or by alias (`VT`, `Bombay Central`). Every word must match, and the matching part lights up in cream.
 - **Favourites**: star a station and its next train lives on the home sheet. Saved on the device.
 - **Nearest station**: one location fix, on request. The app finds the closest stations with a walking time and flies to the nearest. The position is never stored or sent anywhere.
 - **Interchanges**: metro stations within a short walk of a suburban station (Andheri, Ghatkopar, Churchgate, CSMT, Marol Naka, ...) link to each other.
@@ -77,7 +77,7 @@ A train's timetable gives a departure time at each stop. Between two stops the a
 
 ## Design
 
-Transit is a night app: a neutral ink field (`#0d0f12`) with cream type (`#f4efe6`) and the yellow painted along every platform edge (`#ffd60a`) as its one accent. Headlines and the big countdown figures are set in **Fraunces**, interface text in **Schibsted Grotesk**, and the quiet lines in between (notes, section intros, "in Mumbai" under the clock) in italic Fraunces rather than small grey capitals. There are no status pills: the time sits in the corner as type, with a colon that blinks with the seconds. The lines bring the rest of the colour, each in its own: Western orange, Central lime, Harbour mint, Trans-Harbour pink, Uran lilac, and the metro lines in their official blue, yellow, aqua and red. The mark is a fragment of a line map: a yellow line leaves a station, bends at 45° and arrives at a ring.
+Transit borrows the old Mumbai local's livery: a deep maroon (`#6e1c2b`, deepening to `#3b0d17`) as the brand field for the splash, icon and hero cards, and the cream band (`#efd9b0`) as the one accent, over a neutral graphite night (`#0d0f12`) for the map. Headlines and the big countdown figures are set in **Fraunces**, interface text in **Schibsted Grotesk**, and the quiet lines in between (notes, section intros, "in Mumbai" under the clock) in italic Fraunces rather than small grey capitals. There are no status pills: the time sits in the corner as type, with a colon that blinks with the seconds. The lines bring the rest of the colour, each in its own: Western orange, Central lime, Harbour mint, Trans-Harbour pink, Uran lilac, and the metro lines in their official blue, yellow, aqua and red. The mark is a fragment of a line map: a cream line leaves a station, bends at 45° and arrives at a ring, on a maroon tile.
 
 ## Architecture
 
