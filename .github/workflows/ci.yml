@@ -34,7 +34,7 @@ jobs:
         run: python3 -m py_compile tool/build_data.py
 
   web:
-    name: Build web
+    name: Build web demo
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -47,6 +47,24 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build web --release --base-href /transit-mumbai/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: web
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
 
   android:
     name: Build APK
