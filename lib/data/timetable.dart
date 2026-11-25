@@ -253,23 +253,25 @@ class Timetable {
         branches.add(Branch(b['name'] as String, ids, km));
       }
       final s = l['service'] as Map<String, dynamic>?;
-      lines.add(Line(
-        li,
-        l['id'] as String,
-        l['name'] as String,
-        l['kind'] == 'metro',
-        int.parse('FF${(l['color'] as String).substring(1)}', radix: 16),
-        branches,
-        s == null
-            ? null
-            : MetroService(
-                first: _hm(s['first'] as String),
-                last: _hm(s['last'] as String),
-                peak: s['peak'] as int,
-                offpeak: s['offpeak'] as int,
-                runs: (s['runs'] as List).cast<int>(),
-              ),
-      ));
+      lines.add(
+        Line(
+          li,
+          l['id'] as String,
+          l['name'] as String,
+          l['kind'] == 'metro',
+          int.parse('FF${(l['color'] as String).substring(1)}', radix: 16),
+          branches,
+          s == null
+              ? null
+              : MetroService(
+                  first: _hm(s['first'] as String),
+                  last: _hm(s['last'] as String),
+                  peak: s['peak'] as int,
+                  offpeak: s['offpeak'] as int,
+                  runs: (s['runs'] as List).cast<int>(),
+                ),
+        ),
+      );
       for (final b in branches) {
         for (final st in b.stations) {
           if (!stations[st].lines.contains(li)) stations[st].lines.add(li);
@@ -290,18 +292,20 @@ class Timetable {
       for (final d in deltas) {
         times.add(times.last + d);
       }
-      trains.add(Train(
-        id: trains.length,
-        line: r[0] as int,
-        branch: r[1] as int,
-        number: r[2] as String,
-        flags: r[3] as int,
-        days: r[4] as int,
-        generalDays: r[5] as int,
-        stations: ids,
-        times: times,
-        platforms: r.length > 9 ? (r[9] as List).cast<String>() : null,
-      ));
+      trains.add(
+        Train(
+          id: trains.length,
+          line: r[0] as int,
+          branch: r[1] as int,
+          number: r[2] as String,
+          flags: r[3] as int,
+          days: r[4] as int,
+          generalDays: r[5] as int,
+          stations: ids,
+          times: times,
+          platforms: r.length > 9 ? (r[9] as List).cast<String>() : null,
+        ),
+      );
     }
     for (final line in lines) {
       if (line.service != null) _generateMetro(line, trains);
@@ -323,18 +327,20 @@ class Timetable {
         for (final r in runs) {
           times.add(times.last + r);
         }
-        out.add(Train(
-          id: out.length,
-          line: line.index,
-          branch: 0,
-          number: '${line.id}-${forward ? 'A' : 'B'}${n.toString().padLeft(3, '0')}',
-          flags: _ac,
-          days: 0x7F,
-          generalDays: 0,
-          stations: ids,
-          times: times,
-          estimated: true,
-        ));
+        out.add(
+          Train(
+            id: out.length,
+            line: line.index,
+            branch: 0,
+            number: '${line.id}-${forward ? 'A' : 'B'}${n.toString().padLeft(3, '0')}',
+            flags: _ac,
+            days: 0x7F,
+            generalDays: 0,
+            stations: ids,
+            times: times,
+            estimated: true,
+          ),
+        );
         t += s.headwayAt(t)!;
         n++;
       }
@@ -384,28 +390,34 @@ class Timetable {
 
   /// The first train from [from] that later calls at [to].
   Departure? nextBetween(int from, int to, Moment now, {double window = 360}) {
-    final ds = departures(from, now, limit: 400, window: window, where: (d) {
-      final j = d.train.stations.indexOf(to);
-      return j > d.stop;
-    });
+    final ds = departures(
+      from,
+      now,
+      limit: 400,
+      window: window,
+      where: (d) {
+        final j = d.train.stations.indexOf(to);
+        return j > d.stop;
+      },
+    );
     return ds.isEmpty ? null : ds.first;
   }
 
   /// Trains of [line] that could be drawn on [branch]: every stop lies on it.
   List<Train> trainsOnBranch(int line, int branch) => _onBranch.putIfAbsent((line, branch), () {
-        final b = lines[line].branches[branch];
-        final set = b.stations.toSet();
-        return [
-          for (final t in trains)
-            if (t.line == line && t.stations.every(set.contains)) t,
-        ];
-      });
+    final b = lines[line].branches[branch];
+    final set = b.stations.toSet();
+    return [
+      for (final t in trains)
+        if (t.line == line && t.stations.every(set.contains)) t,
+    ];
+  });
 
   /// Where each stop of [t] sits on [branch].
   List<int> branchIndices(Train t, int branch) => _branchIdx.putIfAbsent((t.id, branch), () {
-        final b = lines[t.line].branches[branch];
-        return [for (final s in t.stations) b.indexOf(s)];
-      });
+    final b = lines[t.line].branches[branch];
+    return [for (final s in t.stations) b.indexOf(s)];
+  });
 
   /// Where [t] is at [now] if it is running, from the schedule alone.
   Position? positionOf(Train t, Moment now, {int? branch}) {
@@ -502,7 +514,8 @@ class Timetable {
     return [for (final e in scored.take(limit)) e.$1];
   }
 
-  static String _norm(String s) => s.toLowerCase().replaceAll(RegExp(r"[^a-z0-9 ]"), ' ').replaceAll(RegExp(r' +'), ' ').trim();
+  static String _norm(String s) =>
+      s.toLowerCase().replaceAll(RegExp(r'[^a-z0-9 ]'), ' ').replaceAll(RegExp(r' +'), ' ').trim();
 
   static const _aliases = {
     'CSTM': 'vt victoria terminus chhatrapati shivaji terminus cst',
