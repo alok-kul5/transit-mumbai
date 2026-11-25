@@ -1,58 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!--
-    Uncomment the tag below to lay the app out underneath the parts of the
-    screen that the device obstructs, such as a display cutout, the rounded
-    corners of the screen, or a home indicator.
-
-    Without it, the browser keeps the app clear of them, and `SafeArea` and
-    `MediaQuery.paddingOf` report no padding. With it, the app covers the whole
-    screen, and it is up to the app to keep its own content out of the way,
-    which is what `SafeArea` is for.
-  -->
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> -->
-
-  <!-- iOS meta tags & icons -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Transit: Mumbai locals and metro. Next-train countdowns, offline timetables and a schedule-based train map. A Flutter app.">
+  <meta name="theme-color" content="#0b0d1a">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="transit">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Transit">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>transit</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="manifest" href="manifest.json">
+  <title>Transit · Mumbai locals and metro</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #0b0d1a; }
+    /* Shown while the engine loads, then handed to the app's own splash,
+       which opens on the same colour and draws the same line. */
+    #boot { position: fixed; inset: 0; display: grid; place-items: center; transition: opacity .35s ease; }
+    #boot svg { width: 64px; height: 64px; }
+    #boot path { stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw 1.4s cubic-bezier(.65,0,.35,1) infinite alternate; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { #boot path { animation: none; stroke-dashoffset: 0; } }
+    body.ready #boot { opacity: 0; pointer-events: none; }
+  </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
+  <div id="boot" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <path pathLength="100" d="M10 74 H44 L70 40 H90" fill="none" stroke="#ffd60a" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+    </svg>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      document.body.classList.add('ready');
+      setTimeout(function () { var b = document.getElementById('boot'); if (b) b.remove(); }, 400);
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

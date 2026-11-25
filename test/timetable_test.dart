@@ -5,34 +5,65 @@ import 'package:transit/data/timetable.dart';
 
 /// Three stations in a line, one slow train and one fast train that skips B.
 Timetable fixture() => Timetable.fromJson({
-      'meta': {'sources': []},
-      'stations': [
-        ['A', 'Alpha', 19.0, 72.80],
-        ['B', 'Bravo', 19.0, 72.81],
-        ['C', 'Charlie', 19.0, 72.82],
-      ],
-      'lines': [
+  'meta': {'sources': []},
+  'stations': [
+    ['A', 'Alpha', 19.0, 72.80],
+    ['B', 'Bravo', 19.0, 72.81],
+    ['C', 'Charlie', 19.0, 72.82],
+  ],
+  'lines': [
+    {
+      'id': 'WR',
+      'name': 'Western',
+      'kind': 'rail',
+      'color': '#FF6A3D',
+      'branches': [
         {
-          'id': 'WR',
-          'name': 'Western',
-          'kind': 'rail',
-          'color': '#FF6A3D',
-          'branches': [
-            {
-              'name': 'A – C',
-              'stations': [0, 1, 2],
-            },
-          ],
+          'name': 'A – C',
+          'stations': [0, 1, 2],
         },
       ],
-      'links': [],
-      'trains': [
-        // line, branch, number, flags, days, generalDays, first, stations, deltas, platforms
-        [0, 0, '101', 0, 0x7F, 0, 600, [0, 1, 2], [4, 6], ['1', '2', '']],
-        [0, 0, '102', 1 | 2, 0x1F, 0x60, 610, [0, 2], [8]], // fast AC, weekdays only
-        [0, 0, '103', 0, 0x7F, 0, 1430, [2, 1, 0], [12, 6]], // runs past midnight
-      ],
-    });
+    },
+  ],
+  'links': [],
+  'trains': [
+    // line, branch, number, flags, days, generalDays, first, stations, deltas, platforms
+    [
+      0,
+      0,
+      '101',
+      0,
+      0x7F,
+      0,
+      600,
+      [0, 1, 2],
+      [4, 6],
+      ['1', '2', ''],
+    ],
+    [
+      0,
+      0,
+      '102',
+      1 | 2,
+      0x1F,
+      0x60,
+      610,
+      [0, 2],
+      [8],
+    ], // fast AC, weekdays only
+    [
+      0,
+      0,
+      '103',
+      0,
+      0x7F,
+      0,
+      1430,
+      [2, 1, 0],
+      [12, 6],
+    ], // runs past midnight
+  ],
+});
 
 void main() {
   group('departures', () {
