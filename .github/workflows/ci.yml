@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Analyze and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+      - run: flutter pub get
+      - run: dart format --set-exit-if-changed -l 120 lib test
+      - run: flutter analyze
+      - run: flutter test
+      - name: Data tool compiles
+        run: python3 -m py_compile tool/build_data.py
+
+  web:
+    name: Build web
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+      - run: flutter pub get
+      - run: flutter build web --release --base-href /transit-mumbai/
+
+  android:
+    name: Build APK
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --release --split-per-abi
+      - run: |
+          mkdir dist
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk dist/transit-arm64.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk dist/transit-armv7.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: transit-apk
+          path: dist/*.apk
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/*.apk --title "Transit ${GITHUB_REF_NAME}" --notes "Android builds. Most phones want the arm64 APK." || gh release upload "${GITHUB_REF_NAME}" dist/*.apk --clobber
