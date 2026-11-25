@@ -4,7 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'tokens.dart';
 
-/// The Transit mark: a fragment of a line map. A yellow line leaves a station,
+/// The Transit mark: a fragment of a line map. A cream line leaves a station,
 /// bends at 45 degrees like every good transit diagram, and arrives at a ring.
 class TransitMark extends StatelessWidget {
   const TransitMark({super.key, this.size = 48, this.draw = 1, this.tile = true});
@@ -33,7 +33,7 @@ class _MarkPainter extends CustomPainter {
           ..shader = const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Palette.fieldHi, Palette.field],
+            colors: [Palette.rakeHi, Palette.rakeDeep],
           ).createShader(r),
       );
     }
@@ -49,7 +49,14 @@ abstract final class TransitMarkPainter {
   static const _pts = [Offset(.10, .70), Offset(.44, .70), Offset(.70, .36), Offset(.90, .36)];
 
   /// Draws the mark into [r]. [t] runs the draw-on: line, then the rings.
-  static void paintMark(Canvas canvas, Rect r, double t, {Color line = Palette.signal, Color ring = Palette.ink}) {
+  static void paintMark(
+    Canvas canvas,
+    Rect r,
+    double t, {
+    Color line = Palette.signal,
+    Color ring = Palette.ink,
+    Color hole = Palette.rakeDeep,
+  }) {
     Offset p(Offset u) => Offset(r.left + u.dx * r.width, r.top + u.dy * r.height);
     final w = r.width;
     final path = Path()..moveTo(p(_pts[0]).dx, p(_pts[0]).dy);
@@ -71,11 +78,11 @@ abstract final class TransitMarkPainter {
     // Start station: a solid dot. End station: a ring, which pops when the line arrives.
     final a = Curves.easeOutBack.transform((t / .25).clamp(0.0, 1.0));
     canvas.drawCircle(p(_pts.first), w * .11 * a, Paint()..color = ring);
-    canvas.drawCircle(p(_pts.first), w * .045 * a, Paint()..color = line);
+    canvas.drawCircle(p(_pts.first), w * .045 * a, Paint()..color = hole);
     final b = Curves.easeOutBack.transform(((t - .62) / .38).clamp(0.0, 1.0));
     if (b > 0) {
       canvas.drawCircle(p(_pts.last), w * .14 * b, Paint()..color = ring);
-      canvas.drawCircle(p(_pts.last), w * .065 * b, Paint()..color = Palette.field);
+      canvas.drawCircle(p(_pts.last), w * .065 * b, Paint()..color = hole);
     }
   }
 

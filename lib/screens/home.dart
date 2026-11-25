@@ -475,37 +475,39 @@ class _LocateCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFFFE04D), Palette.signal],
+          colors: [Palette.rakeHi, Palette.rake, Palette.rakeDeep],
         ),
+        border: Border.all(color: Palette.signal.withValues(alpha: .25)),
+        boxShadow: [BoxShadow(color: Palette.rake.withValues(alpha: .45), blurRadius: 28, offset: const Offset(0, 12))],
       ),
       child: Row(
         children: [
           Container(
             width: 46,
             height: 46,
-            decoration: BoxDecoration(color: Palette.signalInk, borderRadius: BorderRadius.circular(15)),
+            decoration: BoxDecoration(color: Palette.signal, borderRadius: BorderRadius.circular(15)),
             child: busy
                 ? const Padding(
                     padding: EdgeInsets.all(13),
-                    child: CircularProgressIndicator(strokeWidth: 2.4, color: Palette.signal),
+                    child: CircularProgressIndicator(strokeWidth: 2.4, color: Palette.rake),
                   )
-                : const Icon(Icons.near_me_rounded, color: Palette.signal),
+                : const Icon(Icons.near_me_rounded, color: Palette.rakeDeep),
           ),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nearest station', style: Txt.display(17, color: Palette.signalInk)),
+                Text('Nearest station', style: Txt.display(19, color: Palette.ink)),
                 const SizedBox(height: 3),
                 Text(
                   'Use your location once. It stays on your phone.',
-                  style: Txt.text(13, color: Palette.signalInk.withValues(alpha: .75), weight: FontWeight.w600),
+                  style: Txt.note(14.5, color: Palette.ink.withValues(alpha: .75)),
                 ),
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_rounded, color: Palette.signalInk),
+          const Icon(Icons.arrow_forward_rounded, color: Palette.signal),
         ],
       ),
     ),

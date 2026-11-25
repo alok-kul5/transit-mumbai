@@ -57,7 +57,7 @@ class _TransitAppState extends State<TransitApp> with SingleTickerProviderStateM
           highlightColor: const Color(0x00000000),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Palette.signal,
-            selectionColor: Color(0x55FFD60A),
+            selectionColor: Color(0x55EFD9B0),
             selectionHandleColor: Palette.signal,
           ),
         ),

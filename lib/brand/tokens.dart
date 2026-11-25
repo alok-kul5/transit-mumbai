@@ -3,8 +3,9 @@ import 'package:material_ui/material_ui.dart';
 
 /// Colour, type and motion for Transit. One place, so every screen agrees.
 abstract final class Palette {
-  // Platform ink at night: a neutral near-black, warm cream type, and the
-  // yellow painted along every platform edge as the one accent.
+  // The old Mumbai local: a maroon rake with a cream band. Maroon is the brand
+  // field (splash, icon, hero cards), cream the one accent, on a neutral
+  // graphite night for the map.
   static const field = Color(0xFF0D0F12);
   static const fieldHi = Color(0xFF1A1D22);
   static const surface = Color(0xFF14171B);
@@ -14,8 +15,11 @@ abstract final class Palette {
   static const ink = Color(0xFFF4EFE6);
   static const muted = Color(0xFFA9A397);
   static const faint = Color(0xFF6E6A63);
-  static const signal = Color(0xFFFFD60A);
-  static const signalInk = Color(0xFF15120A);
+  static const signal = Color(0xFFEFD9B0); // the cream band
+  static const signalInk = Color(0xFF2A0910);
+  static const rake = Color(0xFF6E1C2B); // local-train maroon
+  static const rakeDeep = Color(0xFF3B0D17);
+  static const rakeHi = Color(0xFF8A2838);
   static const go = Color(0xFF3DF2A0);
   static const warn = Color(0xFFFF5D5D);
   static const ladies = Color(0xFFFF8FCB);
