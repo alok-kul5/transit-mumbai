@@ -7,7 +7,8 @@ plugins {
 android {
     namespace = "dev.alok.transit"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // A local build can pick an installed NDK: -P transit.ndk=<version>.
+    ndkVersion = (project.findProperty("transit.ndk") as String?) ?: flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -15,7 +16,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "dev.alok.transit"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.

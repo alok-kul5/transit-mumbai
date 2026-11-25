@@ -81,7 +81,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
           const mark = 132.0;
           final center = Offset(size.width / 2, size.height * .42);
           // The hole opens from the mark's end station.
-          final hole = center + const Offset(mark * .40, mark * -.10) * (1 + .5 * reveal);
+          final hole = center + const Offset(mark * .40, mark * -.14) * (1 + .5 * reveal);
           final maxR = math.sqrt(size.width * size.width + size.height * size.height);
           return ClipPath(
             clipper: _HoleClipper(hole, maxR * reveal),
@@ -166,7 +166,7 @@ class _SplashMarkPainter extends CustomPainter {
   _SplashMarkPainter(this.draw, this.signal);
   final double draw, signal;
 
-  static const _pts = [Offset(.10, .74), Offset(.44, .74), Offset(.70, .40), Offset(.90, .40)];
+  static const _pts = [Offset(.10, .70), Offset(.44, .70), Offset(.70, .36), Offset(.90, .36)];
 
   @override
   void paint(Canvas canvas, Size size) {

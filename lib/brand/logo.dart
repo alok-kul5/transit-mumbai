@@ -46,7 +46,7 @@ class _MarkPainter extends CustomPainter {
 
 abstract final class TransitMarkPainter {
   /// Points of the line in a unit square.
-  static const _pts = [Offset(.10, .74), Offset(.44, .74), Offset(.70, .40), Offset(.90, .40)];
+  static const _pts = [Offset(.10, .70), Offset(.44, .70), Offset(.70, .36), Offset(.90, .36)];
 
   /// Draws the mark into [r]. [t] runs the draw-on: line, then the rings.
   static void paintMark(Canvas canvas, Rect r, double t, {Color line = Palette.signal, Color ring = Palette.ink}) {

@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Map tiles come from openstreetmap.org. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- One location fix, only when you ask for the nearest station. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
-        android:label="transit"
+        android:label="Transit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
