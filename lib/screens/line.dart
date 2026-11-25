@@ -73,6 +73,7 @@ class _LineScreenState extends State<LineScreen> with SingleTickerProviderStateM
           SliverToBoxAdapter(
             child: Hero(
               tag: 'line-${line.id}',
+              flightShuttleBuilder: (_, anim, _, _, _) => LineShuttle(anim: anim, color: Color(line.color)),
               child: Material(
                 type: MaterialType.transparency,
                 child: Container(
@@ -499,4 +500,33 @@ class _DiagramPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_DiagramPainter old) => true;
+}
+
+/// What flies between a line tile and this header: the card stretches,
+/// loses its corners and floods with the line's colour.
+class LineShuttle extends StatelessWidget {
+  const LineShuttle({super.key, required this.anim, required this.color});
+  final Animation<double> anim;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: anim,
+    builder: (context, _) {
+      final t = Motion.out.transform(anim.value);
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20 * (1 - t)),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.lerp(Palette.card, Color.lerp(Palette.field, color, .45)!, t)!,
+              Color.lerp(Palette.card, Palette.field, t)!,
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

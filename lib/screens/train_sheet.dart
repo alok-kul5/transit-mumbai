@@ -16,12 +16,31 @@ Future<void> showTrainSheet(BuildContext context, Departure d) => showModalBotto
 );
 
 /// One train's run: every stop and time, with the train's place on it now.
-class TrainSheet extends StatelessWidget {
+class TrainSheet extends StatefulWidget {
   const TrainSheet({super.key, required this.departure});
   final Departure departure;
 
   @override
+  State<TrainSheet> createState() => _TrainSheetState();
+}
+
+class _TrainSheetState extends State<TrainSheet> {
+  bool _scrolled = false;
+
+  /// Brings the stop the train is at (or your stop, if it has not left) into view, once.
+  void _scrollTo(ScrollController scroll, int row) {
+    if (_scrolled) return;
+    _scrolled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!scroll.hasClients) return;
+      final target = ((row - 2) * 52.0).clamp(0.0, scroll.position.maxScrollExtent);
+      scroll.animateTo(target, duration: Motion.of(context, Motion.slow), curve: Motion.out);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final departure = widget.departure;
     final state = TransitScope.of(context);
     final tt = state.timetable;
     final d = departure;
@@ -83,6 +102,7 @@ class TrainSheet extends StatelessWidget {
                   // Minutes since this run's service-day midnight.
                   final since = now.minute - dayOffset;
                   final (seg, p) = interpolate(t.times, since);
+                  _scrollTo(scroll, since >= t.start ? seg : d.stop);
                   final started = since >= t.start;
                   final ended = since >= t.end;
                   return ListView.builder(
@@ -238,7 +258,7 @@ class _TrackPainter extends CustomPainter {
       ..strokeWidth = 5;
     if (!first) canvas.drawLine(Offset(x, 0), Offset(x, mid), passed || here ? done : track);
     if (!last) canvas.drawLine(Offset(x, mid), Offset(x, size.height), passed && progress == null ? done : track);
-    canvas.drawCircle(Offset(x, mid), 7, Paint()..color = passed ? Palette.surface : c);
+    canvas.drawCircle(Offset(x, mid), 7, Paint()..color = passed ? c.withValues(alpha: .35) : c);
     canvas.drawCircle(Offset(x, mid), 4, Paint()..color = Palette.surface);
     final p = progress;
     if (here || p != null) {

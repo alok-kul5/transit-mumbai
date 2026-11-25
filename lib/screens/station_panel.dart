@@ -4,20 +4,13 @@ import '../brand/tokens.dart';
 import '../data/timetable.dart';
 import '../state/app_state.dart';
 import '../widgets/ui.dart';
-import 'home.dart';
+import 'home.dart' show DataNote;
 import 'train_sheet.dart';
 
 /// A station's departure board, inside the home sheet.
 class StationPanel extends StatefulWidget {
-  const StationPanel({
-    super.key,
-    required this.station,
-    required this.scroll,
-    required this.onClose,
-    required this.onStation,
-  });
+  const StationPanel({super.key, required this.station, required this.onClose, required this.onStation});
   final int station;
-  final ScrollController scroll;
   final VoidCallback onClose;
   final ValueChanged<int> onStation;
 
@@ -36,11 +29,9 @@ class _StationPanelState extends State<StationPanel> {
     final s = tt.stations[widget.station];
     final fav = state.isFavourite(s.id);
     final anyFast = tt.callsAt(s.id).any((c) => c.$1.fast);
-    return ListView(
-      controller: widget.scroll,
-      padding: EdgeInsets.fromLTRB(18, 0, 18, MediaQuery.paddingOf(context).bottom + 28),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SheetHandle(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

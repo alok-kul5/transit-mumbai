@@ -319,25 +319,39 @@ class _Sheet extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-            child: AnimatedSwitcher(
-              duration: Motion.of(context, Motion.base),
-              switchInCurve: Motion.out,
-              transitionBuilder: (child, anim) => FadeTransition(
-                opacity: anim,
-                child: SlideTransition(
-                  position: Tween(begin: const Offset(0, .04), end: Offset.zero).animate(anim),
-                  child: child,
-                ),
-              ),
-              child: state.selected == null
-                  ? _Overview(key: const ValueKey('overview'), scroll: scroll, onStation: onStation, onLocate: onLocate)
-                  : StationPanel(
-                      key: ValueKey(state.selected),
-                      station: state.selected!,
-                      scroll: scroll,
-                      onClose: onClose,
-                      onStation: onStation,
+            // One list owns the sheet's scroll controller; only its content cross-fades.
+            child: ListView(
+              controller: scroll,
+              padding: EdgeInsets.fromLTRB(18, 0, 18, MediaQuery.paddingOf(context).bottom + 28),
+              children: [
+                const SheetHandle(),
+                AnimatedSwitcher(
+                  duration: Motion.of(context, Motion.base),
+                  switchInCurve: Motion.out,
+                  layoutBuilder: (current, previous) => Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      for (final p in previous) Positioned(left: 0, right: 0, top: 0, child: p),
+                      ?current,
+                    ],
+                  ),
+                  transitionBuilder: (child, anim) => FadeTransition(
+                    opacity: anim,
+                    child: SlideTransition(
+                      position: Tween(begin: const Offset(0, .04), end: Offset.zero).animate(anim),
+                      child: child,
                     ),
+                  ),
+                  child: state.selected == null
+                      ? _Overview(key: const ValueKey('overview'), onStation: onStation, onLocate: onLocate)
+                      : StationPanel(
+                          key: ValueKey(state.selected),
+                          station: state.selected!,
+                          onClose: onClose,
+                          onStation: onStation,
+                        ),
+                ),
+              ],
             ),
           ),
         ),
@@ -361,8 +375,7 @@ class SheetHandle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
-  const _Overview({super.key, required this.scroll, required this.onStation, required this.onLocate});
-  final ScrollController scroll;
+  const _Overview({super.key, required this.onStation, required this.onLocate});
   final ValueChanged<int> onStation;
   final VoidCallback onLocate;
 
@@ -372,11 +385,9 @@ class _Overview extends StatelessWidget {
     final tt = state.timetable;
     var i = 0;
     Duration d() => Duration(milliseconds: 80 + 60 * i++);
-    return ListView(
-      controller: scroll,
-      padding: EdgeInsets.fromLTRB(18, 0, 18, MediaQuery.paddingOf(context).bottom + 28),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SheetHandle(),
         const SizedBox(height: 6),
         Reveal(
           delay: d(),
@@ -672,6 +683,7 @@ class LineTile extends StatelessWidget {
       label: '${line.name} line, $running trains running',
       child: Hero(
         tag: 'line-${line.id}',
+        flightShuttleBuilder: (_, anim, _, _, _) => LineShuttle(anim: anim, color: Color(line.color)),
         child: Material(
           type: MaterialType.transparency,
           child: Container(
@@ -717,9 +729,13 @@ class LineTile extends StatelessWidget {
                       children: [
                         Text('$running', style: Txt.display(22, color: running > 0 ? c : Palette.faint)),
                         const SizedBox(width: 5),
-                        Text(
-                          running == 1 ? 'train on the move' : 'on the move',
-                          style: Txt.text(11.5, color: Palette.muted, weight: FontWeight.w700),
+                        Flexible(
+                          child: Text(
+                            'on the move',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Txt.text(11.5, color: Palette.muted, weight: FontWeight.w700),
+                          ),
                         ),
                       ],
                     ),
