@@ -113,7 +113,7 @@ class _StationPanelState extends State<StationPanel> {
         ),
         if (s.links.isNotEmpty) ...[
           const SizedBox(height: 18),
-          Text('CHANGE HERE', style: Txt.label(11)),
+          Text('Change here', style: Txt.display(21)),
           const SizedBox(height: 8),
           for (final id in s.links)
             Pressable(
@@ -266,7 +266,7 @@ class _HeroDeparture extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('NEXT TRAIN', style: Txt.label(10.5, color: c)),
+                  Text('Next train', style: Txt.note(16, color: c)),
                   const SizedBox(height: 6),
                   Countdown(d.minutesAway, size: 46, color: soon ? Palette.signal : Palette.ink),
                   const SizedBox(height: 8),

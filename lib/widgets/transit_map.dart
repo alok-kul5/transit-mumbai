@@ -18,11 +18,11 @@ abstract final class MapTiles {
 }
 
 /// Night tint for the standard OSM tiles: grey out the colours, stretch the
-/// contrast so water sinks and roads rise, then tint it all midnight blue.
+/// contrast so water sinks and roads rise, leaving a cool graphite.
 const _night = ColorFilter.matrix([
-  0.1701, 0.5722, 0.0578, 0, -143, //
-  0.1807, 0.6079, 0.0614, 0, -150,
-  0.2126, 0.7152, 0.0722, 0, -160,
+  0.1786, 0.6008, 0.0606, 0, -152, //
+  0.1786, 0.6008, 0.0606, 0, -151,
+  0.1913, 0.6437, 0.0650, 0, -156,
   0, 0, 0, 1, 0,
 ]);
 

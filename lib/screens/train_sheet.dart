@@ -75,7 +75,7 @@ class _TrainSheetState extends State<TrainSheet> {
                     children: [
                       LineChip(line),
                       const SizedBox(width: 8),
-                      if (!t.estimated) Text('Train ${t.number}', style: Txt.label(11)),
+                      if (!t.estimated) Text('train ${t.number}', style: Txt.note(15)),
                       const Spacer(),
                       ...trainTags(d).expand((w) => [w, const SizedBox(width: 4)]),
                     ],

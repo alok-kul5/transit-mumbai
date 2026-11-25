@@ -13,16 +13,18 @@ Future<void> main() async {
     const SystemUiOverlayStyle(
       statusBarColor: Color(0x00000000),
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Color(0xFF0B0D1A),
+      systemNavigationBarColor: Color(0xFF0D0F12),
     ),
   );
   final results = await Future.wait([
     rootBundle.loadString('assets/transit.json'),
     SharedPreferences.getInstance(),
     // Wait briefly for the faces, so the splash never flashes a fallback font.
-    GoogleFonts.pendingFonts([GoogleFonts.unbounded(), GoogleFonts.manrope()])
-        .timeout(const Duration(milliseconds: 1500), onTimeout: () => const [])
-        .catchError((_) => const []),
+    GoogleFonts.pendingFonts([
+      GoogleFonts.fraunces(),
+      GoogleFonts.fraunces(fontStyle: FontStyle.italic),
+      GoogleFonts.schibstedGrotesk(),
+    ]).timeout(const Duration(milliseconds: 1500), onTimeout: () => const []).catchError((_) => const []),
   ]);
   final tt = Timetable.parse(results[0] as String);
   runApp(TransitApp(state: TransitState(tt, prefs: results[1] as SharedPreferences)));

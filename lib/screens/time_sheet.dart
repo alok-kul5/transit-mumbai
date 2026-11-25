@@ -4,10 +4,11 @@ import '../brand/tokens.dart';
 import '../state/app_state.dart';
 import '../widgets/ui.dart';
 
-/// Mumbai time, with a green dot when it is real time and yellow when the
-/// schedule has been moved or sped up.
-class ClockPill extends StatelessWidget {
-  const ClockPill({super.key, required this.clock, required this.onTap});
+/// The time in Mumbai, set as type rather than a badge: a serif clock with an
+/// italic line under it. The line turns yellow when you are looking at another
+/// time or running the schedule fast. Tap for the time controls.
+class TimeReadout extends StatelessWidget {
+  const TimeReadout({super.key, required this.clock, required this.onTap});
   final TransitClock clock;
   final VoidCallback onTap;
 
@@ -20,81 +21,45 @@ class ClockPill extends StatelessWidget {
       builder: (context) {
         final live = clock.isLive;
         final now = clock.ist;
-        final dot = live ? Palette.go : Palette.signal;
-        return Container(
-          padding: const EdgeInsets.fromLTRB(10, 7, 12, 7),
-          decoration: BoxDecoration(
-            color: Palette.card.withValues(alpha: .92),
-            borderRadius: BorderRadius.circular(99),
-            border: Border.all(color: live ? Palette.line : Palette.signal.withValues(alpha: .6)),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _Pulse(color: dot),
-              const SizedBox(width: 8),
-              Text(_hhmm(now), style: Txt.text(14, weight: FontWeight.w800)),
-              const SizedBox(width: 6),
-              Text(
-                live ? 'IST' : (clock.speed != 1 ? '${clock.speed.round()}×' : _weekday(now.weekday)),
-                style: Txt.label(10, color: live ? Palette.muted : Palette.signal),
+        final hh = now.hour.toString().padLeft(2, '0');
+        final mm = now.minute.toString().padLeft(2, '0');
+        final note = live
+            ? 'in Mumbai'
+            : clock.speed != 1
+            ? 'running ${clock.speed.round()}× fast'
+            : '${_weekday(now.weekday)}, previewing';
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: hh),
+                  // The colon blinks with the seconds, like a station clock.
+                  TextSpan(
+                    text: ':',
+                    style: TextStyle(color: now.second.isEven ? Palette.ink : Palette.ink.withValues(alpha: .25)),
+                  ),
+                  TextSpan(text: mm),
+                ],
               ),
-            ],
-          ),
+              style: Txt.display(24, weight: FontWeight.w600, height: 1),
+            ),
+            const SizedBox(height: 2),
+            AnimatedDefaultTextStyle(
+              duration: Motion.of(context, Motion.base),
+              style: Txt.note(13, color: live ? Palette.muted : Palette.signal),
+              child: Text(note),
+            ),
+          ],
         );
       },
     ),
   );
-
-  static String _hhmm(DateTime t) => '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
 }
 
-String _weekday(int d) => const ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'][d - 1];
-
-class _Pulse extends StatefulWidget {
-  const _Pulse({required this.color});
-  final Color color;
-
-  @override
-  State<_Pulse> createState() => _PulseState();
-}
-
-class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
-  late final _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1400))..repeat();
-
-  @override
-  void dispose() {
-    _c.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-    width: 12,
-    height: 12,
-    child: AnimatedBuilder(
-      animation: _c,
-      builder: (context, _) => Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 4 + 8 * _c.value,
-            height: 4 + 8 * _c.value,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: widget.color.withValues(alpha: .5 * (1 - _c.value)),
-            ),
-          ),
-          Container(
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: widget.color),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+String _weekday(int d) => const ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][d - 1];
 
 Future<void> showTimeSheet(BuildContext context) => showModalBottomSheet(
   context: context,
@@ -150,7 +115,7 @@ class _TimeSheetState extends State<_TimeSheet> {
               ],
             ),
             const SizedBox(height: 18),
-            Text('SPEED', style: Txt.label(11)),
+            Text('Speed', style: Txt.note(16)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,

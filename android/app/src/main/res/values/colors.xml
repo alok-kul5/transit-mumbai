@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The app's midnight field, so nothing flashes white on launch. -->
-    <color name="launch">#0B0D1A</color>
+    <color name="launch">#0D0F12</color>
 </resources>

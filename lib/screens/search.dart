@@ -94,8 +94,10 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                _q.trim().isEmpty ? 'BUSIEST INTERCHANGES' : '${results.length} STATIONS',
-                style: Txt.label(11),
+                _q.trim().isEmpty
+                    ? 'The busiest interchanges'
+                    : '${results.length} ${results.length == 1 ? 'station' : 'stations'}',
+                style: Txt.note(16),
               ),
             ),
           ),

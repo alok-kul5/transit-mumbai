@@ -116,7 +116,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                             opacity: tag,
                             child: Transform.translate(
                               offset: Offset(0, 8 * (1 - tag)),
-                              child: Text('MUMBAI LOCALS  ·  METRO', style: Txt.label(11.5, color: Palette.muted)),
+                              child: Text('Mumbai locals & metro', style: Txt.note(18, color: Palette.muted)),
                             ),
                           ),
                         ],

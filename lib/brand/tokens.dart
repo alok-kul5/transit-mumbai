@@ -3,26 +3,27 @@ import 'package:material_ui/material_ui.dart';
 
 /// Colour, type and motion for Transit. One place, so every screen agrees.
 abstract final class Palette {
-  // A midnight field, the colour of the city after the last local, and the
-  // yellow painted along every platform edge.
-  static const field = Color(0xFF0B0D1A);
-  static const fieldHi = Color(0xFF161A33);
-  static const surface = Color(0xFF13162B);
-  static const card = Color(0xFF1B1F3A);
-  static const cardHi = Color(0xFF242949);
-  static const line = Color(0xFF2B3054);
-  static const ink = Color(0xFFF5F2E9);
-  static const muted = Color(0xFF9CA1C4);
-  static const faint = Color(0xFF636A93);
+  // Platform ink at night: a neutral near-black, warm cream type, and the
+  // yellow painted along every platform edge as the one accent.
+  static const field = Color(0xFF0D0F12);
+  static const fieldHi = Color(0xFF1A1D22);
+  static const surface = Color(0xFF14171B);
+  static const card = Color(0xFF1C1F24);
+  static const cardHi = Color(0xFF25292F);
+  static const line = Color(0xFF2C3037);
+  static const ink = Color(0xFFF4EFE6);
+  static const muted = Color(0xFFA9A397);
+  static const faint = Color(0xFF6E6A63);
   static const signal = Color(0xFFFFD60A);
-  static const signalInk = Color(0xFF14110A);
+  static const signalInk = Color(0xFF15120A);
   static const go = Color(0xFF3DF2A0);
   static const warn = Color(0xFFFF5D5D);
   static const ladies = Color(0xFFFF8FCB);
   static const ac = Color(0xFF7CD8FF);
 }
 
-/// Unbounded for headlines and the big numbers, Manrope for everything you read.
+/// Fraunces for headlines and the big figures, Schibsted Grotesk for
+/// interface text, and italic Fraunces for the quiet lines in between.
 abstract final class Txt {
   /// Off in tests, where nothing may touch the network.
   static bool useGoogleFonts = true;
@@ -31,18 +32,18 @@ abstract final class Txt {
     double size, {
     Color color = Palette.ink,
     double height = 1.0,
-    FontWeight weight = FontWeight.w700,
+    FontWeight weight = FontWeight.w600,
     double? spacing,
   }) {
     final base = TextStyle(
       fontSize: size,
       height: height,
-      letterSpacing: spacing ?? -0.03 * size,
+      letterSpacing: spacing ?? -0.025 * size,
       color: color,
       fontWeight: weight,
-      fontFeatures: const [FontFeature.tabularFigures()],
+      fontFeatures: const [FontFeature.liningFigures(), FontFeature.tabularFigures()],
     );
-    return useGoogleFonts ? GoogleFonts.unbounded(textStyle: base) : base;
+    return useGoogleFonts ? GoogleFonts.fraunces(textStyle: base) : base;
   }
 
   static TextStyle text(
@@ -60,11 +61,17 @@ abstract final class Txt {
       color: color,
       fontFeatures: const [FontFeature.tabularFigures()],
     );
-    return useGoogleFonts ? GoogleFonts.manrope(textStyle: base) : base;
+    return useGoogleFonts ? GoogleFonts.schibstedGrotesk(textStyle: base) : base;
+  }
+
+  /// Secondary lines (notes, section heads): italic serif, never small grey caps.
+  static TextStyle note(double size, {Color color = Palette.muted, double height = 1.3}) {
+    final base = TextStyle(fontSize: size, height: height, color: color, fontStyle: FontStyle.italic);
+    return useGoogleFonts ? GoogleFonts.fraunces(textStyle: base) : base;
   }
 
   static TextStyle label(double size, {Color color = Palette.muted}) =>
-      text(size, weight: FontWeight.w800, color: color, spacing: 1.4);
+      text(size, weight: FontWeight.w700, color: color, spacing: 1.1);
 }
 
 /// Motion tokens. Things leave fast and land softly, like a train braking into

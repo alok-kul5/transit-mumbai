@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0xF00B0D1A), Color(0x000B0D1A)],
+                      colors: [Color(0xF00D0F12), Color(0x000D0F12)],
                     ),
                   ),
                 ),
@@ -165,9 +165,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       children: [
                         const TransitMark(size: 30),
                         const SizedBox(width: 10),
-                        Text('Transit', style: Txt.display(21, weight: FontWeight.w800)),
-                        const Spacer(),
-                        ClockPill(clock: state.clock, onTap: () => showTimeSheet(context)),
+                        Expanded(
+                          child: Text(
+                            'Transit',
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                            style: Txt.display(26, weight: FontWeight.w700),
+                          ),
+                        ),
+                        TimeReadout(clock: state.clock, onTap: () => showTimeSheet(context)),
                       ],
                     ),
                     const SizedBox(height: 14),
@@ -226,7 +232,7 @@ class _SearchPill extends StatelessWidget {
                   style: Txt.text(15.5, color: Palette.muted, weight: FontWeight.w600),
                 ),
               ),
-              Text('VT · ADH · TNA', style: Txt.label(10, color: Palette.faint)),
+              Text('try "VT"', style: Txt.note(14, color: Palette.faint)),
             ],
           ),
         ),
@@ -391,11 +397,12 @@ class _Overview extends StatelessWidget {
         const SizedBox(height: 6),
         Reveal(
           delay: d(),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: Text('Next trains', style: Txt.display(27))),
-              const _ScheduleBadge(),
+              Text('Next trains', style: Txt.display(32)),
+              const SizedBox(height: 4),
+              Text('Worked out from the timetable, not live GPS.', style: Txt.note(15)),
             ],
           ),
         ),
@@ -430,10 +437,7 @@ class _Overview extends StatelessWidget {
           const SizedBox(height: 12),
           Reveal(
             delay: d(),
-            child: Text(
-              'Star a station and its next train lives here.',
-              style: Txt.text(13.5, color: Palette.faint, weight: FontWeight.w600),
-            ),
+            child: Text('Star a station and its next train lives here.', style: Txt.note(15, color: Palette.faint)),
           ),
         ],
         const SizedBox(height: 22),
@@ -452,28 +456,7 @@ class _SectionLabel extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) => Text(text.toUpperCase(), style: Txt.label(11.5));
-}
-
-class _ScheduleBadge extends StatelessWidget {
-  const _ScheduleBadge();
-
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(99),
-      border: Border.all(color: Palette.line),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(Icons.schedule_rounded, size: 13, color: Palette.muted),
-        const SizedBox(width: 5),
-        Text('SCHEDULE-BASED', style: Txt.label(9.5)),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) => Text(text, style: Txt.display(21));
 }
 
 class _LocateCard extends StatelessWidget {

@@ -61,17 +61,17 @@ void main() {
     await tester.pumpWidget(TransitApp(state: TransitState(_tt, clock: _rush())));
     // Mid-sequence: the wordmark is up.
     await pumpFor(tester, const Duration(milliseconds: 1500));
-    expect(find.text('MUMBAI LOCALS  ·  METRO'), findsOneWidget);
+    expect(find.text('Mumbai locals & metro'), findsOneWidget);
     await pumpFor(tester, const Duration(seconds: 2));
-    expect(find.text('MUMBAI LOCALS  ·  METRO'), findsNothing);
+    expect(find.text('Mumbai locals & metro'), findsNothing);
     expect(find.text('Next trains'), findsOneWidget);
-    expect(find.text('SCHEDULE-BASED'), findsOneWidget);
+    expect(find.text('Worked out from the timetable, not live GPS.'), findsOneWidget);
   });
 
   testWidgets('search a station and see its next trains', (tester) async {
     await pumpApp(tester);
     await openStation(tester, 'andh', 'Andheri');
-    expect(find.text('NEXT TRAIN'), findsOneWidget);
+    expect(find.text('Next train'), findsOneWidget);
     expect(find.text('Andheri'), findsWidgets);
     // At 9am the board is full, with fast trains among them.
     expect(find.text('FAST'), findsWidgets);
@@ -90,7 +90,7 @@ void main() {
 
     await tester.tap(labelled('Close'));
     await pumpFor(tester, const Duration(seconds: 2));
-    expect(find.text('YOUR STATIONS'), findsOneWidget);
+    expect(find.text('Your stations'), findsOneWidget);
     expect(labelled('Thane'), findsOneWidget);
   });
 
@@ -112,7 +112,7 @@ void main() {
     await tester.tap(tile, warnIfMissed: false);
     await pumpFor(tester, const Duration(seconds: 2));
     expect(find.byType(LineScreen), findsOneWidget);
-    expect(find.text("WHERE'S MY TRAIN"), findsOneWidget);
+    expect(find.text("Where's my train"), findsOneWidget);
     expect(find.text('Positions follow the timetable. Not live GPS.'), findsOneWidget);
     final running = _tt.running(state.clock.now, line: 0, branch: 0).length;
     expect(running, greaterThan(40));
