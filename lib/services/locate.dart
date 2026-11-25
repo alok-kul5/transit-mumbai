@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../state/app_state.dart';
@@ -16,9 +17,22 @@ Future<void> locate(TransitState state) async {
       state.setLocationError('Location permission was not given.');
       return;
     }
-    final pos = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.medium, timeLimit: Duration(seconds: 15)),
-    );
+    const limit = Duration(seconds: 15);
+    // On Android, the platform's own location manager: a station is hundreds of
+    // metres wide, so there is no need for Play Services' accuracy prompt.
+    final settings = !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+        ? AndroidSettings(accuracy: LocationAccuracy.medium, forceLocationManager: true, timeLimit: limit)
+        : const LocationSettings(accuracy: LocationAccuracy.medium, timeLimit: limit);
+    Position? pos;
+    try {
+      pos = await Geolocator.getCurrentPosition(locationSettings: settings);
+    } catch (_) {
+      if (!kIsWeb) pos = await Geolocator.getLastKnownPosition(forceAndroidLocationManager: true);
+    }
+    if (pos == null) {
+      state.setLocationError('Could not find your location.');
+      return;
+    }
     state.setHere(pos.latitude, pos.longitude);
   } catch (e) {
     state.setLocationError('Could not find your location.');
